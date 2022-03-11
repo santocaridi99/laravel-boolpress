@@ -13,6 +13,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', "HomeController@index");
+
+Auth::routes();
+
+Route::middleware("auth")
+    ->namespace("Admin")
+    ->prefix("admin")
+    ->name("admin.")
+    ->group(function () {
+        Route::get('/', 'HomeController@index')->name('home');
+    });
+
+// se non vede niente torna all'home
+Route::get("{any?}", function () {
+    return view("home");
+})->where("any", ".*");
