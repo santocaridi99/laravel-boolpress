@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\PostController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,6 +23,8 @@ Route::middleware("auth")
     ->name("admin.")
     ->group(function () {
         Route::get('/', 'HomeController@index')->name('home');
+        // rotta per i posts
+        Route::resource("posts","PostController");
     });
 
 // se non vede niente torna all'home
