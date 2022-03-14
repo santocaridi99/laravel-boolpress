@@ -44,9 +44,14 @@ class PostController extends Controller
             "content" => "required|min:3"
         ]);
         // creo post
-        $post = new Post();
-        // passo i dati fillati al post
-        $post->fill($data);
+
+        // $post = new Post();
+        // // passo i dati fillati al post
+        // $post->fill($data);
+
+        // posso scrivere direttamente
+        $post = new Post($data);
+
         // genero slug dal titolo
         $slug = Str::slug($post->title);
         // controllo al db se esiste un elemento con lo stesso slug
