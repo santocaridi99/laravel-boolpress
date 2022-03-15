@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Category;
 use App\Http\Controllers\Controller;
 use App\Post;
 use Illuminate\Http\Request;
@@ -28,7 +29,10 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view("admin.posts.create");
+        // select di tutte le categorie
+        $categories= Category::all();
+        // passo dati alla view
+        return view("admin.posts.create",compact("categories"));
     }
 
     /**
@@ -42,7 +46,8 @@ class PostController extends Controller
         // valido i dati provenienti dalla request
         $data = $request->validate([
             "title" => "required|min:3",
-            "content" => "required|min:3"
+            "content" => "required|min:3",
+            "category_id" => "nullable"
         ]);
         // creo post
 
@@ -101,9 +106,15 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($slug)
     {
-        //
+        //query su Post per controllare se già esiste elemebti slug
+        $post = Post::where("slug", $slug)->first();
+        // query su Category
+        // che restituisce tutte le category
+        $categories = Category::all();
+        // alla view ora passo due variabili invece di una
+        return view("admin.posts.edit",["post"=>$post,"categories"=>$categories]);
     }
 
     /**
@@ -118,7 +129,8 @@ class PostController extends Controller
         // valido i dati provenienti dalla request
         $data = $request->validate([
             "title" => "required|min:3",
-            "content" => "required|min:3"
+            "content" => "required|min:3",
+            "category_id" => "nullable",
         ]);
         $post = Post::findOrFail($id);
         // se decido di cambiare il titolo
@@ -147,7 +159,7 @@ class PostController extends Controller
         }
 
         $post->update($data);
-        return redirect()->route("admin.posts.show",$post->id);
+        return redirect()->route("admin.posts.show",$post->slug);
     }
 
     /**
