@@ -36,4 +36,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    // a User corrispondono tanti Post
+    public function posts(){
+        return $this->hasMany("App\Post");
+    }
 }

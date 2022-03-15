@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class PostController extends Controller
@@ -72,6 +73,10 @@ class PostController extends Controller
         }
         // assegno valore di slug al nuovo post
         $post->slug = $slug;
+         // passo l'id dell elemnto loggato per assegnare a user_id qualcosa 
+        // sennò ho errore per valore di default mancante
+        $post->user_id = Auth::user()->id;
+        // salvo
         $post->save();
         // redirect all'index
         return redirect()->route("admin.posts.index");
