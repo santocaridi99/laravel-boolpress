@@ -11,9 +11,20 @@
                 </div>
 
                 <div class="card-body">
-
-                    {{ $post->content }}
-
+                    {{-- stampo content del post --}}
+                    <h1>{{ $post->content }}</h1>
+                    <div class="my-3">
+                        {{-- stampo utente --}}
+                        <p> Scritto da : {{$post->user->name}}</p>
+                    </div>
+                    {{-- se la categoria non è nulla la stampo insieme alla descrizione --}}
+                    {{-- come scritto in index scrivo category , perchè nel model ho creato funzione category  quindi richiama la relazione e quindi posso leggere title e description --}}
+                    @if($post->category !== null)
+                    <div class="my-3">
+                        <p>Categoria: {{$post->category->title}}</p>
+                        <p>Descrizione: {{$post->category->description}}</p>
+                    </div>
+                    @endif
                 </div>
             </div>
         </div>

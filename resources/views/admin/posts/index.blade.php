@@ -18,6 +18,7 @@
                             {{$post->title}}
                             <span class="ms-2">[{{$post->user->name}}]</span>
                             {{-- se la categoria del post è  nulla allora do undefined sennò la categoria relativa --}}
+                            {{-- category , perchè nel model ho creato funzione category  quindi richiama la relazione e quindi posso leggere title --}}
                             <span class="ms-2">Category:[{{($post->category===null)? "undefined" : $post->category->title}}]</span>
                             <a class="ms-auto" href="{{ route('admin.posts.show', $post->slug) }}">Mostra</a>
                         </li>
