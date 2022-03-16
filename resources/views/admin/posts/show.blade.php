@@ -25,6 +25,15 @@
                         <p>Descrizione: {{$post->category->description}}</p>
                     </div>
                     @endif
+                    {{-- ugualmente a category lavoro con i tags --}}
+                    {{-- che è un array collection --}}
+                    @if($post->tags)
+                     <div class="my-3">
+                         @foreach ($post->tags as $tag)
+                             <span>#{{$tag->name}}</span>
+                         @endforeach
+                     </div>
+                    @endif
                 </div>
             </div>
         </div>

@@ -20,6 +20,12 @@
                             {{-- se la categoria del post è  nulla allora do undefined sennò la categoria relativa --}}
                             {{-- category , perchè nel model ho creato funzione category  quindi richiama la relazione e quindi posso leggere title --}}
                             <span class="ms-2">Category:[{{($post->category===null)? "undefined" : $post->category->title}}]</span>
+                            {{-- se ci sono tags nel post allora faccio un foreach e stampo i nomi --}}
+                             @if($post->tags)
+                                 @foreach ($post->tags as $tag)
+                                     <span class="ms-2">#{{$tag->name}}</span>
+                                 @endforeach
+                             @endif
                             <a class="ms-auto" href="{{ route('admin.posts.show', $post->slug) }}">Mostra</a>
                         </li>
                         @endforeach
