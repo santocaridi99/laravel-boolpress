@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Category;
 use App\Http\Controllers\Controller;
 use App\Post;
+use App\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -32,9 +33,11 @@ class PostController extends Controller
     public function create()
     {
         // select di tutte le categorie
-        $categories= Category::all();
+        $categories = Category::all();
+        // select di tutti i tags
+        $tags = Tag::all();
         // passo dati alla view
-        return view("admin.posts.create",compact("categories"));
+        return view("admin.posts.create", compact("categories", "tags"));
     }
 
     /**
@@ -49,8 +52,10 @@ class PostController extends Controller
         $data = $request->validate([
             "title" => "required|min:3",
             "content" => "required|min:3",
-            "category_id" => "nullable"
+            "category_id" => "nullable",
+            "tags" => "exists:tags,id"
         ]);
+        // la validazione di tags va nella tabella tags e vede se c'è un id esistente relativo al tag
         // creo post
 
         // $post = new Post();
@@ -80,11 +85,17 @@ class PostController extends Controller
         }
         // assegno valore di slug al nuovo post
         $post->slug = $slug;
-         // passo l'id dell elemnto loggato per assegnare a user_id qualcosa 
+        // passo l'id dell elemnto loggato per assegnare a user_id qualcosa 
         // sennò ho errore per valore di default mancante
         $post->user_id = Auth::user()->id;
         // salvo
         $post->save();
+        //  aggiungo le relazioni con i tag ricevuti
+        // attach avviene dopo aver salvato,
+        // così avrò l'id del nuovo post che viene creato dopo il save
+        // non serve usare il detach qui
+        $post->tags()->attach($data["tags"]);
+
         // redirect all'index
         return redirect()->route("admin.posts.index");
     }
@@ -113,10 +124,12 @@ class PostController extends Controller
         //query su Post per controllare se già esiste elemebti slug
         $post = Post::where("slug", $slug)->first();
         // query su Category
-        // che restituisce tutte le category
+        // che restituisce tutte le categorie
         $categories = Category::all();
+        // query su tag che restituisce tutti i tag presenti nel db
+        $tags = Tag::all();
         // alla view ora passo due variabili invece di una
-        return view("admin.posts.edit",["post"=>$post,"categories"=>$categories]);
+        return view("admin.posts.edit", ["post" => $post, "categories" => $categories, "tags" => $tags]);
     }
 
     /**
@@ -133,6 +146,7 @@ class PostController extends Controller
             "title" => "required|min:3",
             "content" => "required|min:3",
             "category_id" => "nullable",
+            "tags" => "nullable|exists:tags,id"
         ]);
         $post = Post::findOrFail($id);
         // se decido di cambiare il titolo
@@ -156,12 +170,19 @@ class PostController extends Controller
                     $slug = $newSlug;
                 }
             }
-            $post ->slug = $slug;
+            $post->slug = $slug;
             $data["slug"] = $slug;
         }
 
         $post->update($data);
-        return redirect()->route("admin.posts.show",$post->slug);
+        // se la key tags esiste nel data fai il sync altrimenti niente
+        if (key_exists("tags", $data)) {
+            // sync fa prima un detach quindi elimina le vecchie relazioni
+            // e mantiene quelle presenti nell'array
+            // attach aggiunge le nuove relazioni
+            $post->tags()->sync($data["tags"]);
+        }
+        return redirect()->route("admin.posts.show", $post->slug);
     }
 
     /**

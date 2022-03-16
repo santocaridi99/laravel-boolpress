@@ -41,7 +41,7 @@
                 <option value="">-- Nessuna Categoria --</option>
                 @foreach ($categories as $category)
                 <option value="{{ $category->id }}" {{-- se il category post è strettamente uguale all' id della
-                  categoria metto selected --}} @if (old('category_id') === $category->id)
+                  categoria metto selected --}} @if (old('category_id')===$category->id)
                   selected
                   @endIf>
                   {{-- stamoi titolo della categoria --}}
@@ -49,6 +49,21 @@
                 </option>
                 @endforeach
               </select>
+            </div>
+            <div class="mb-4">
+              <label>Inserisci i Tags: </label>
+              @foreach ($tags as $tag)
+              {{-- crep delle form check --}}
+              {{-- con value id --}}
+              <div class="form-check form-check-inline">
+                {{-- assegnando un id ,sia all' input sia label con il for al click della label si checka l'input --}}
+                {{-- mettendo le parentesi quadre al name , al server i dati arrivano sotto forma di array --}}
+                <input class="form-check-input" type="checkbox" value="{{$tag->id}}" id="tag_{{$tag->id}}"
+                  name="tags[]">
+                {{-- contenuto è il nome del tag --}}
+                <label class="form-check-label" for="tag_{{$tag->id}}">{{$tag->name}}</label>
+              </div>
+              @endforeach
             </div>
 
             <div class="form-group">

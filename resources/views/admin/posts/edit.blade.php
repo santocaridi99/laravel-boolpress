@@ -43,16 +43,34 @@
                                 {{-- value vuota --}}
                                 <option value="">-- Nessuna Categoria --</option>
                                 @foreach ($categories as $category)
-                                <option value="{{ $category->id }}" 
-                                    {{-- se il category post è strettamente uguale all' id della categoria metto selected --}}
-                                    @if ($post->category_id === $category->id) 
-                                      selected
+                                <option value="{{ $category->id }}" {{-- se il category post è strettamente uguale all'
+                                    id della categoria metto selected --}} @if ($post->category_id === $category->id)
+                                    selected
                                     @endIf>
                                     {{-- stamoi titolo della categoria --}}
                                     {{ $category->title }}
                                 </option>
                                 @endforeach
                             </select>
+                        </div>
+                        <div class="mb-4">
+                            <label>Modifica tabella</label>
+                            @foreach ($tags as $tag)
+                            {{-- creo delle form check --}}
+                            {{-- con value id --}}
+                            <div class="form-check form-check-inline">
+                                {{-- assegnando un id ,sia all' input sia label con il for al click della label si
+                                checka l'input --}}
+                                {{-- mettendo le parentesi quadre al name , al server i dati arrivano sotto forma di
+                                array --}}
+                                {{-- se nell'array tags è gia presente tag allora metti checked altrimenti niente --}}
+                                <input class="form-check-input" type="checkbox" value="{{$tag->id}}"
+                                    id="tag_{{$tag->id}}" name="tags[]" {{$post->tags->contains($tag) ? 'checked' : ''}}>
+                                {{-- contenuto è il nome del tag --}}
+                                <label class="form-check-label" for="tag_{{$tag->id}}">{{$tag->name}}</label>
+                            </div>
+                            @endforeach
+
                         </div>
 
                         <div class="form-group">
