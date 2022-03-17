@@ -176,6 +176,7 @@ class PostController extends Controller
 
         $post->update($data);
         // se la key tags esiste nel data fai il sync altrimenti niente
+        // messo questo controllo perchè posso avere post senza tag
         if (key_exists("tags", $data)) {
             // sync fa prima un detach quindi elimina le vecchie relazioni
             // e mantiene quelle presenti nell'array

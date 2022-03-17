@@ -17,6 +17,15 @@
                         {{-- stampo utente --}}
                         <p> Scritto da : {{$post->user->name}}</p>
                     </div>
+                    <div class="my-3">
+                        {{-- stampo data formattata --}}
+                        @php
+                            use Carbon\Carbon;
+                        @endphp
+                        <p> Data Creazione :  @if($post->created_at->diffInHours() > 12) {{$post->created_at->format('d-m-Y , H:i')}} @else {{$post->created_at->diffForHumans()}} @endif </p>
+                        <p>Data ultima  Modifica : @if($post->created_at->diffInHours() > 12) {{$post->created_at->format('d-m-Y , H:i')}} @else {{$post->created_at->diffForHumans()}} @endif </p>
+
+                    </div>
                     {{-- se la categoria non è nulla la stampo insieme alla descrizione --}}
                     {{-- come scritto in index scrivo category , perchè nel model ho creato funzione category  quindi richiama la relazione e quindi posso leggere title e description --}}
                     @if($post->category !== null)
