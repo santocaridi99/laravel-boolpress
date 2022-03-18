@@ -94,8 +94,9 @@ class PostController extends Controller
         // attach avviene dopo aver salvato,
         // così avrò l'id del nuovo post che viene creato dopo il save
         // non serve usare il detach qui
-        $post->tags()->attach($data["tags"]);
-
+        if (key_exists("tags", $data)) {
+            $post->tags()->attach($data["tags"]);
+        }
         // redirect all'index
         return redirect()->route("admin.posts.index");
     }
@@ -147,7 +148,7 @@ class PostController extends Controller
             "content" => "required|min:3",
             "category_id" => "nullable",
             "tags" => "nullable|exists:tags,id",
-            "image"=>"nullable"
+            "image" => "nullable"
         ]);
         $post = Post::findOrFail($id);
         // se decido di cambiare il titolo
