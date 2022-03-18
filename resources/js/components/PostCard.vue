@@ -7,8 +7,8 @@
         <!-- content può essere un html -->
         <p class="card-text" v-html="post.content"></p>
 
-        <em>Autore: {{ post.user.name }}; Data: {{ post.created_at }}</em
-        ><br />
+        <p>Autore: {{ post.user.name }}</p>
+        <p>Data {{ post.created_at }}</p>
         <!-- se c'è la categoria , stampa il titolo -->
         <p v-if="post.category">{{ post.category.title }}</p>
       </div>
@@ -18,22 +18,21 @@
 
 <script>
 export default {
-props:{
+  props: {
     // passo ogg post
-    post:Object,
-},
-methods:{
-    getimage(post){
-        if(post.image===null){
-            return "https://blumagnolia.ch/wp-content/uploads/2021/05/placeholder-126-300x200.png"
-        }else{
-            return post.image
-        }
-    }
-}
-}
+    post: Object,
+  },
+  methods: {
+    getimage(post) {
+      if (post.image === null) {
+        return "https://blumagnolia.ch/wp-content/uploads/2021/05/placeholder-126-300x200.png";
+      } else {
+        return post.image;
+      }
+    },
+  },
+};
 </script>
 
 <style>
-
 </style>

@@ -16,7 +16,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
+        // 6 post per pagina
+        $posts = Post::paginate(6);
         // recupero dato della relazione user con load dato che ho  già istanza del model
         $posts->load("user", "category");
         return response()->json($posts);

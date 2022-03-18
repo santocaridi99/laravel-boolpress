@@ -2013,6 +2013,31 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 // importo axios
  // importo navbar
 
@@ -2028,15 +2053,34 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       // array di post
-      posts: []
+      posts: [],
+      // oggetto vuoto
+      pagination: {}
     };
   },
   methods: {
+    // assegnavo valore di default alla pagina 1
     postsApi: function postsApi() {
       var _this = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/api/posts").then(function (res) {
-        _this.posts = res.data;
+      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+
+      // se pagina va a -1 allora va all'ultina
+      if (page < 1) {
+        page = this.pagination.last_page;
+      } // se pagina va oltre la fine , torna all'inizio
+
+
+      if (page > this.pagination.last_page) {
+        page = this.pagination.first_page;
+      } // modificato la query e  inserito la pagina 
+
+
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/api/posts?page=" + page).then(function (res) {
+        // mi salvo tutti i dati della paginazione
+        _this.pagination = res.data; // facendo la paginazione i dati dei post saranno in data.data
+
+        _this.posts = res.data.data;
       });
     }
   },
@@ -2547,15 +2591,9 @@ var render = function () {
           domProps: { innerHTML: _vm._s(_vm.post.content) },
         }),
         _vm._v(" "),
-        _c("em", [
-          _vm._v(
-            "Autore: " +
-              _vm._s(_vm.post.user.name) +
-              "; Data: " +
-              _vm._s(_vm.post.created_at)
-          ),
-        ]),
-        _c("br"),
+        _c("p", [_vm._v("Autore: " + _vm._s(_vm.post.user.name))]),
+        _vm._v(" "),
+        _c("p", [_vm._v("Data " + _vm._s(_vm.post.created_at))]),
         _vm._v(" "),
         _vm.post.category
           ? _c("p", [_vm._v(_vm._s(_vm.post.category.title))])
@@ -2670,6 +2708,62 @@ var render = function () {
       _vm._v(" "),
       _c("div", { staticClass: "container py-4" }, [
         _c("h1", [_vm._v("Boolpress")]),
+        _vm._v(" "),
+        _c("nav", { attrs: { "aria-label": "Page navigation example" } }, [
+          _c(
+            "ul",
+            { staticClass: "pagination" },
+            [
+              _c("li", { staticClass: "page-item" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass: "page-link",
+                    on: {
+                      click: function ($event) {
+                        return _vm.postsApi(_vm.pagination.current_page - 1)
+                      },
+                    },
+                  },
+                  [_vm._v("Previous")]
+                ),
+              ]),
+              _vm._v(" "),
+              _vm._l(_vm.pagination.last_page, function (page) {
+                return _c("li", { key: page, staticClass: "page-item" }, [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "page-link",
+                      on: {
+                        click: function ($event) {
+                          return _vm.postsApi(page)
+                        },
+                      },
+                    },
+                    [_vm._v(_vm._s(page))]
+                  ),
+                ])
+              }),
+              _vm._v(" "),
+              _c("li", { staticClass: "page-item" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass: "page-link",
+                    on: {
+                      click: function ($event) {
+                        return _vm.postsApi(_vm.pagination.current_page + 1)
+                      },
+                    },
+                  },
+                  [_vm._v("Next")]
+                ),
+              ]),
+            ],
+            2
+          ),
+        ]),
         _vm._v(" "),
         _c(
           "div",
