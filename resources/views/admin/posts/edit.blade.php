@@ -54,7 +54,14 @@
                             </select>
                         </div>
                         <div class="mb-4">
-                            <label>Modifica tabella</label>
+                            <label>Modifica imagine </label>
+                            <input type="text" name="image" class="form-control @error('image') is-invalid @enderror" value="{{ $post->image }}">
+                            @error('image')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="mb-4">
+                            <label>Modifica tags</label>
                             @foreach ($tags as $tag)
                             {{-- creo delle form check --}}
                             {{-- con value id --}}

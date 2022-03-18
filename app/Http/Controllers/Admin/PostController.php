@@ -53,7 +53,8 @@ class PostController extends Controller
             "title" => "required|min:3",
             "content" => "required|min:3",
             "category_id" => "nullable",
-            "tags" => "exists:tags,id"
+            "tags" => "exists:tags,id",
+            "image"=>"nullable"
         ]);
         // la validazione di tags va nella tabella tags e vede se c'è un id esistente relativo al tag
         // creo post
@@ -146,7 +147,8 @@ class PostController extends Controller
             "title" => "required|min:3",
             "content" => "required|min:3",
             "category_id" => "nullable",
-            "tags" => "nullable|exists:tags,id"
+            "tags" => "nullable|exists:tags,id",
+            "image" => "nullable"
         ]);
         $post = Post::findOrFail($id);
         // se decido di cambiare il titolo

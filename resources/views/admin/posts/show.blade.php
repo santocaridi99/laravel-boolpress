@@ -20,28 +20,41 @@
                     <div class="my-3">
                         {{-- stampo data formattata --}}
                         @php
-                            use Carbon\Carbon;
+                        use Carbon\Carbon;
                         @endphp
-                        <p> Data Creazione :  @if($post->created_at->diffInHours() > 12) {{$post->created_at->format('d-m-Y , H:i')}} @else {{$post->created_at->diffForHumans()}} @endif </p>
-                        <p>Data ultima  Modifica : @if($post->created_at->diffInHours() > 12) {{$post->created_at->format('d-m-Y , H:i')}} @else {{$post->created_at->diffForHumans()}} @endif </p>
+                        <p> Data Creazione : @if($post->created_at->diffInHours() > 12)
+                            {{$post->created_at->format('d-m-Y , H:i')}} @else {{$post->created_at->diffForHumans()}}
+                            @endif </p>
+                        <p>Data ultima Modifica : @if($post->created_at->diffInHours() > 12)
+                            {{$post->created_at->format('d-m-Y , H:i')}} @else {{$post->created_at->diffForHumans()}}
+                            @endif </p>
 
                     </div>
                     {{-- se la categoria non è nulla la stampo insieme alla descrizione --}}
-                    {{-- come scritto in index scrivo category , perchè nel model ho creato funzione category  quindi richiama la relazione e quindi posso leggere title e description --}}
+                    {{-- come scritto in index scrivo category , perchè nel model ho creato funzione category quindi
+                    richiama la relazione e quindi posso leggere title e description --}}
                     @if($post->category !== null)
                     <div class="my-3">
                         <p>Categoria: {{$post->category->title}}</p>
                         <p>Descrizione: {{$post->category->description}}</p>
                     </div>
                     @endif
+                    {{-- se non c'è immagine nmetto un placeholder --}}
+                    @if($post->image !== null)
+                    <div class="my-3">
+                        <img src="{{$post->image}}" alt="{{$post->title}}">
+                        @else <img src="https://blumagnolia.ch/wp-content/uploads/2021/05/placeholder-126-300x200.png"
+                            alt="dummy">
+                    </div>
+                    @endif
                     {{-- ugualmente a category lavoro con i tags --}}
                     {{-- che è un array collection --}}
                     @if($post->tags)
-                     <div class="my-3">
-                         @foreach ($post->tags as $tag)
-                             <span>#{{$tag->name}}</span>
-                         @endforeach
-                     </div>
+                    <div class="my-3">
+                        @foreach ($post->tags as $tag)
+                        <span>#{{$tag->name}}</span>
+                        @endforeach
+                    </div>
                     @endif
                 </div>
             </div>

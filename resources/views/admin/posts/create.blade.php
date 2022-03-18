@@ -65,6 +65,15 @@
               </div>
               @endforeach
             </div>
+            {{-- sezione inserire img --}}
+            <div class="mb-4">
+              <label>Inserire un immagine</label>
+              <input type="text" name="image" class="form-control @error('image') is-invalid @enderror"
+                value="{{ old('image') }}">
+              @error('image')
+              <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
+            </div>
 
             <div class="form-group">
               <a href="{{ route('admin.posts.index') }}" class="btn btn-secondary">Annulla</a>
