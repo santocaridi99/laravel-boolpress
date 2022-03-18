@@ -53,7 +53,8 @@ class PostController extends Controller
             "title" => "required|min:3",
             "content" => "required|min:3",
             "category_id" => "nullable",
-            "tags" => "nullable"
+            "tags" => "nullable",
+            "image"=>"nullable"
         ]);
         // la validazione di tags va nella tabella tags e vede se c'è un id esistente relativo al tag
         // creo post

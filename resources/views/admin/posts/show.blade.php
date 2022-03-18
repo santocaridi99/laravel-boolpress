@@ -40,13 +40,13 @@
                     </div>
                     @endif
                     {{-- se non c'è immagine nmetto un placeholder --}}
-                    @if($post->image !== null)
                     <div class="my-3">
-                        <img src="{{$post->image}}" alt="{{$post->title}}">
-                        @else <img src="https://blumagnolia.ch/wp-content/uploads/2021/05/placeholder-126-300x200.png"
+                        @if($post->image === null)
+                        <img src="https://blumagnolia.ch/wp-content/uploads/2021/05/placeholder-126-300x200.png"
                             alt="dummy">
+                        @else  <img src="{{$post->image}}" alt="{{$post->title}}">
+                        @endif
                     </div>
-                    @endif
                     {{-- ugualmente a category lavoro con i tags --}}
                     {{-- che è un array collection --}}
                     @if($post->tags)
