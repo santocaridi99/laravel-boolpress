@@ -8,6 +8,8 @@ import Home from "./pages/Home.vue";
 import Contacts from "./pages/Contacts.vue";
 // importo lo show
 import Show from "./pages/posts/Show.vue";
+// importo Errore
+import Errore from "./pages/Errore.vue";
 // diciamo a vue di utilizzare il plugin
 Vue.use(VueRouter);
 // questo oggetto conterrà tutte le configurazioni di vue router
@@ -39,6 +41,13 @@ const router = new VueRouter({
             // i link non ci serve in questa rotta
             meta:{title:"Dettagli del post"}
 
+        },
+        // rotta per errori
+        // path quando non corrisponde in nessuno di quelli
+        {
+            path:"*",
+            component:Errore,
+            name:"error"
         }
 
     ]

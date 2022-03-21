@@ -53,6 +53,10 @@ class PostController extends Controller
     public function show($slug)
     {
         $post = Post::where("slug", $slug)->with(["tags", "user", "category"])->first();
+        // se non c'è il post lanciare un 404
+        if(!$post){
+            abort(404);
+        }
         //   ritorno json
         return response()->json($post);
     }
