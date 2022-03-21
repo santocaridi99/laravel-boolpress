@@ -11,6 +11,12 @@
         <p>Data {{ post.created_at }}</p>
         <!-- se c'è la categoria , stampa il titolo -->
         <p v-if="post.category">{{ post.category.title }}</p>
+        <div class="card-footer text-end">
+          <!-- passo al link oggetto nome rotta post.show e come parametri :post diamo lo slug del post -->
+          <router-link :to="{ name: 'posts.show', params: { post: post.slug } }"
+            >Dettagli<i class="fas fa-chevron-right ms-2"></i
+          ></router-link>
+        </div>
       </div>
     </div>
   </div>

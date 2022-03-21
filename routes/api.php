@@ -19,4 +19,5 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get("/posts", "Api\PostController@index");
-
+// rotta show di un singolo post
+Route::get("/posts/{post}", "Api\PostController@show");

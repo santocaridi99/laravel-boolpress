@@ -41,7 +41,6 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        
     }
 
     /**
@@ -50,9 +49,12 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    // allo show mostro lo slug
+    public function show($slug)
     {
-      
+        $post = Post::where("slug", $slug)->with(["tags", "user", "category"])->first();
+        //   ritorno json
+        return response()->json($post);
     }
 
     /**
