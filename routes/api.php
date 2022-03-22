@@ -14,9 +14,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+// sfrutto il middleware auth già usato in web.php
+// e per far funzionare questo middlware c'è bisogno di configurare il kernel
+
+Route::middleware('auth')->get('/user', function (Request $request) {
+    return $request->user();
+});
 
 Route::get("/posts", "Api\PostController@index");
 // rotta show di un singolo post

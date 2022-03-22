@@ -1971,6 +1971,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -2008,12 +2010,32 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       // inserirò le rotte già registrate in modo globale
-      routes: []
+      routes: [],
+      // utente
+      // di default non  è loggato
+      user: null
     };
+  },
+  methods: {
+    getUser: function getUser() {
+      var _this = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/api/user").then(function (res) {
+        _this.user = res.data;
+      })["catch"](function (er) {
+        console.log("Utente non trovato");
+      });
+    }
   },
   mounted: function mounted() {
     // $routes istanza globale in routes.js
@@ -2021,7 +2043,9 @@ __webpack_require__.r(__webpack_exports__);
     // !! doppia negazione , torna true
     this.routes = this.$router.getRoutes().filter(function (route) {
       return !!route.meta.link;
-    });
+    }); // avvio get user
+
+    this.getUser();
   }
 });
 
@@ -3623,7 +3647,13 @@ var render = function () {
                         staticClass: "nav-link",
                         attrs: { to: !route.path ? "/" : route.path },
                       },
-                      [_vm._v(" " + _vm._s(route.meta.link) + " ")]
+                      [
+                        _vm._v(
+                          "\n            " +
+                            _vm._s(route.meta.link) +
+                            "\n          "
+                        ),
+                      ]
                     ),
                   ],
                   1
@@ -3632,7 +3662,21 @@ var render = function () {
               0
             ),
             _vm._v(" "),
-            _vm._m(1),
+            _c("ul", { staticClass: "navbar-nav ml-auto" }, [
+              _c("li", { staticClass: "nav-item" }, [
+                !_vm.user
+                  ? _c(
+                      "a",
+                      { staticClass: "nav-link", attrs: { href: "/login" } },
+                      [_vm._v(" Login ")]
+                    )
+                  : _c(
+                      "a",
+                      { staticClass: "nav-link", attrs: { href: "/admin" } },
+                      [_vm._v(" " + _vm._s(_vm.user.name) + " ")]
+                    ),
+              ]),
+            ]),
           ]
         ),
       ]),
@@ -3658,18 +3702,6 @@ var staticRenderFns = [
       },
       [_c("span", { staticClass: "navbar-toggler-icon" })]
     )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("ul", { staticClass: "navbar-nav ml-auto" }, [
-      _c("li", { staticClass: "nav-item" }, [
-        _c("a", { staticClass: "nav-link", attrs: { href: "/login" } }, [
-          _vm._v(" Admin "),
-        ]),
-      ]),
-    ])
   },
 ]
 render._withStripped = true
