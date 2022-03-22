@@ -2031,9 +2031,19 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/api/user").then(function (res) {
-        _this.user = res.data;
+        _this.user = res.data; // sfrutto il local storage di js così posso salvare i dati
+        // e sfruttarli in altri componenti senza fare tantissimi event
+        // salvo nel local storage user passato dal res data
+
+        localStorage.setItem("user", JSON.stringify(res.data)); // lancio evento customizzato che chiamiamo storedUserchannged
+        // chi lo ascolta es. altri componenti dovranno attivare un addeventlistner con questo nome evento
+
+        window.dispatchEvent(new CustomEvent("storedUserChanged"));
       })["catch"](function (er) {
-        console.log("Utente non trovato");
+        console.log("Utente non Loggato"); // rimuovo l'user
+
+        localStorage.removeItem("user");
+        window.dispatchEvent(new CustomEvent("storedUserChanged"));
       });
     }
   },

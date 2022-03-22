@@ -58,9 +58,19 @@ export default {
         .get("/api/user")
         .then((res) => {
           this.user = res.data;
+          // sfrutto il local storage di js così posso salvare i dati
+          // e sfruttarli in altri componenti senza fare tantissimi event
+          // salvo nel local storage user passato dal res data
+          localStorage.setItem("user", JSON.stringify(res.data));
+          // lancio evento customizzato che chiamiamo storedUserchannged
+          // chi lo ascolta es. altri componenti dovranno attivare un addeventlistner con questo nome evento
+          window.dispatchEvent(new CustomEvent("storedUserChanged"));
         })
         .catch((er) => {
-          console.log("Utente non trovato");
+          console.log("Utente non Loggato");
+          // rimuovo l'user
+          localStorage.removeItem("user");
+          window.dispatchEvent(new CustomEvent("storedUserChanged"));
         });
     },
   },
