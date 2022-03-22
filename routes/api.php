@@ -24,3 +24,5 @@ Route::middleware('auth')->get('/user', function (Request $request) {
 Route::get("/posts", "Api\PostController@index");
 // rotta show di un singolo post
 Route::get("/posts/{post}", "Api\PostController@show");
+// rotta dei contatti , dove c'è un form e l' utente farà il submit del form
+Route::post("/contacts", "Api\ContactController@store");

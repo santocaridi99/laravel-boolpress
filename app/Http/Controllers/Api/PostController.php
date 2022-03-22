@@ -14,10 +14,19 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    // uso request per poter leggere il query string
+    public function index(Request $request)
     {
-        // 6 post per pagina
-        $posts = Post::paginate(6);
+        // filtro
+        // input è un modo per leggere una sola chiave della request
+        $filter = $request->input("filter");
+        if ($filter) {
+            // query del filter e paginate (title like filter)
+            $posts = Post::where("title", "LIKE", "%$filter%")->paginate(6);
+        } else {
+            // 6 post per pagina
+            $posts = Post::paginate(6);
+        }
         // recupero dato della relazione user con load dato che ho  già istanza del model
         $posts->load("user", "category");
         return response()->json($posts);
@@ -54,7 +63,7 @@ class PostController extends Controller
     {
         $post = Post::where("slug", $slug)->with(["tags", "user", "category"])->first();
         // se non c'è il post lanciare un 404
-        if(!$post){
+        if (!$post) {
             abort(404);
         }
         //   ritorno json

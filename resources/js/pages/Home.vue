@@ -1,6 +1,16 @@
 <template>
   <div>
     <h1>Boolpress</h1>
+    <div class="my-4">
+      <!-- filtro post -->
+      <input
+        type="text"
+        class="form-input"
+        placeholder="Filtra post"
+        v-model="search"
+        @keydown.enter="searchSubmit"
+      />
+    </div>
     <!-- paginazione di bootstrap -->
     <nav aria-label="Page navigation example">
       <ul class="pagination">
@@ -43,11 +53,13 @@ export default {
       posts: [],
       // oggetto vuoto
       pagination: {},
+      // search
+      search: "",
     };
   },
   methods: {
     // assegnavo valore di default alla pagina 1
-    postsApi(page = 1) {
+    postsApi(page = 1, search = null) {
       // se pagina va a -1 allora va all'ultina
       if (page < 1) {
         page = this.pagination.last_page;
@@ -57,12 +69,24 @@ export default {
         page = this.pagination.first_page;
       }
       // modificato la query e  inserito la pagina
-      axios.get("/api/posts?page=" + page).then((res) => {
-        // mi salvo tutti i dati della paginazione
-        this.pagination = res.data;
-        // facendo la paginazione i dati dei post saranno in data.data
-        this.posts = res.data.data;
-      });
+      axios
+        .get("/api/posts", {
+          params: {
+            page,
+            filter: search,
+          },
+        })
+        .then((res) => {
+          // mi salvo tutti i dati della paginazione
+          this.pagination = res.data;
+          // facendo la paginazione i dati dei post saranno in data.data
+          this.posts = res.data.data;
+        });
+    },
+    searchSubmit() {
+      // sfrutto postapi
+      //parto da  pagina 1 e secondo argomento
+      this.postsApi(1, this.search);
     },
   },
   mounted() {
