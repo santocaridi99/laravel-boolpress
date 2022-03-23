@@ -44,7 +44,7 @@
                         @if($post->image === null)
                         <img src="https://blumagnolia.ch/wp-content/uploads/2021/05/placeholder-126-300x200.png"
                             alt="dummy">
-                        @else  <img src="{{$post->image}}" alt="{{$post->title}}">
+                        @else  <img src="{{asset("storage/".$post->image)}}" alt="{{$post->title}}" class="img-fluid">
                         @endif
                     </div>
                     {{-- ugualmente a category lavoro con i tags --}}

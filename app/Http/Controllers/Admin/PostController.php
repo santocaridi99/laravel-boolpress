@@ -8,6 +8,7 @@ use App\Post;
 use App\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class PostController extends Controller
@@ -54,7 +55,8 @@ class PostController extends Controller
             "content" => "required|min:3",
             "category_id" => "nullable",
             "tags" => "nullable",
-            "image"=>"nullable"
+            // image può essere jpeg , png ecc massimo 500byte
+            "image"=>"nullable|mimes:jpg,jpeg,png,bmp|max:500"
         ]);
         // la validazione di tags va nella tabella tags e vede se c'è un id esistente relativo al tag
         // creo post
@@ -149,7 +151,7 @@ class PostController extends Controller
             "content" => "required|min:3",
             "category_id" => "nullable",
             "tags" => "nullable|exists:tags,id",
-            "image" => "nullable"
+            "image" => "nullable|mimes:jpg,jpeg,png,bmp|max:500"
         ]);
         $post = Post::findOrFail($id);
         // se decido di cambiare il titolo
@@ -176,7 +178,6 @@ class PostController extends Controller
             $post->slug = $slug;
             $data["slug"] = $slug;
         }
-
         $post->update($data);
         // se la key tags esiste nel data fai il sync altrimenti niente
         // messo questo controllo perchè posso avere post senza tag
@@ -185,6 +186,16 @@ class PostController extends Controller
             // e mantiene quelle presenti nell'array
             // attach aggiunge le nuove relazioni
             $post->tags()->sync($data["tags"]);
+        }
+        // se data contiene l'img ,(file)
+        if(key_exists("image",$data)){
+            // cancella quella vecchia
+            if($post->image){
+                Storage::delete($post->coverImg);
+            }
+            $image = Storage::put("images",$data["image"]);
+            $post->image = $image;
+            $post->save();
         }
         return redirect()->route("admin.posts.show", $post->slug);
     }
