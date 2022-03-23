@@ -91,6 +91,11 @@ class PostController extends Controller
         // passo l'id dell elemnto loggato per assegnare a user_id qualcosa 
         // sennò ho errore per valore di default mancante
         $post->user_id = Auth::user()->id;
+        // se esiste image nel data
+        if(key_exists("image",$data)){
+            // upload del file
+            $post->image = Storage::put("images",$data["image"]);
+        }
         // salvo
         $post->save();
         //  aggiungo le relazioni con i tag ricevuti

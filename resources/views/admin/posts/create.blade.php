@@ -11,7 +11,7 @@
 
         <div class="card-body">
 
-          <form action="{{ route('admin.posts.store') }}" method="post">
+          <form action="{{ route('admin.posts.store') }}" method="post" enctype="multipart/form-data">
             @csrf
 
             {{-- titolo --}}
@@ -68,8 +68,7 @@
             {{-- sezione inserire img --}}
             <div class="mb-4">
               <label>Inserire un immagine</label>
-              <input type="text" name="image" class="form-control @error('image') is-invalid @enderror"
-                value="{{ old('image') }}">
+              <input type="file" name="image" class="form-control @error('image') is-invalid @enderror">
               @error('image')
               <div class="invalid-feedback">{{ $message }}</div>
               @enderror
