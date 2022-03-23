@@ -1,7 +1,7 @@
 <template>
   <div class="col">
     <div class="card">
-      <img :src="getimage(post)" class="card-img-top" alt="..." />
+      <img :src="getimage(post)" class="card-img-top img-fluid" alt="..." />
       <div class="card-body">
         <h5 class="card-title">{{ post.title }}</h5>
         <!-- content può essere un html -->

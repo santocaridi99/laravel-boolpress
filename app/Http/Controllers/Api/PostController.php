@@ -29,6 +29,13 @@ class PostController extends Controller
         }
         // recupero dato della relazione user con load dato che ho  già istanza del model
         $posts->load("user", "category");
+        // faccio un each di ogni post
+        // e se il post ha un img sostituisco il valore con url completo
+        $posts->each(function ($post) {
+            if ($post->image) {
+                $post->image = asset("storage/" . $post->image);
+            }
+        });
         return response()->json($posts);
     }
 

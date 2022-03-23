@@ -3713,7 +3713,7 @@ var render = function () {
   return _c("div", { staticClass: "col" }, [
     _c("div", { staticClass: "card" }, [
       _c("img", {
-        staticClass: "card-img-top",
+        staticClass: "card-img-top img-fluid",
         attrs: { src: _vm.getimage(_vm.post), alt: "..." },
       }),
       _vm._v(" "),
