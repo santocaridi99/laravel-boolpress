@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Contact;
 use App\Http\Controllers\Controller;
+use App\Mail\ContactEmail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class ContactController extends Controller
 {
@@ -22,8 +24,10 @@ class ContactController extends Controller
         $newContact->fill($data);
         // salvo
         $newContact->save();
-        // ritorno un json
-
+        // dentro istanza classe ContactEmail posso passare come argomento newContact
+        // (ho il costruttore nella classe ContactEmail)
+        Mail::to("esempio@sito.com")->send(new ContactEmail($newContact));
+           // ritorno un json
         return response()->json($newContact);
     }
 }
