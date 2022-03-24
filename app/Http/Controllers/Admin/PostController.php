@@ -56,7 +56,7 @@ class PostController extends Controller
             "category_id" => "nullable",
             "tags" => "nullable",
             // image può essere jpeg , png ecc massimo 500byte
-            "image"=>"nullable|mimes:jpg,jpeg,png,bmp|max:500"
+            "image" => "nullable|mimes:jpg,jpeg,png,bmp|max:500"
         ]);
         // la validazione di tags va nella tabella tags e vede se c'è un id esistente relativo al tag
         // creo post
@@ -92,9 +92,9 @@ class PostController extends Controller
         // sennò ho errore per valore di default mancante
         $post->user_id = Auth::user()->id;
         // se esiste image nel data
-        if(key_exists("image",$data)){
+        if (key_exists("image", $data)) {
             // upload del file
-            $post->image = Storage::put("images",$data["image"]);
+            $post->image = Storage::put("images", $data["image"]);
         }
         // salvo
         $post->save();
@@ -184,6 +184,16 @@ class PostController extends Controller
             $data["slug"] = $slug;
         }
         $post->update($data);
+        // se data contiene l'img ,(file)
+        if (key_exists("image", $data)) {
+            // cancella quella vecchia
+            if ($post->image) {
+                Storage::delete($post->image);
+            }
+            $image = Storage::put("images", $data["image"]);
+            $post->image = $image;
+            $post->save();
+        }
         // se la key tags esiste nel data fai il sync altrimenti niente
         // messo questo controllo perchè posso avere post senza tag
         if (key_exists("tags", $data)) {
@@ -191,16 +201,6 @@ class PostController extends Controller
             // e mantiene quelle presenti nell'array
             // attach aggiunge le nuove relazioni
             $post->tags()->sync($data["tags"]);
-        }
-        // se data contiene l'img ,(file)
-        if(key_exists("image",$data)){
-            // cancella quella vecchia
-            if($post->image){
-                Storage::delete($post->coverImg);
-            }
-            $image = Storage::put("images",$data["image"]);
-            $post->image = $image;
-            $post->save();
         }
         return redirect()->route("admin.posts.show", $post->slug);
     }
