@@ -73,6 +73,11 @@ class PostController extends Controller
         if (!$post) {
             abort(404);
         }
+        if ($post->image) {
+            $post->image = asset("storage/" . $post->image);
+        }else{
+            $post->image = "https://blumagnolia.ch/wp-content/uploads/2021/05/placeholder-126-300x200.png";
+        }
         //   ritorno json
         return response()->json($post);
     }
