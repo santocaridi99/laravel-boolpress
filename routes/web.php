@@ -24,8 +24,11 @@ Route::middleware("auth")
     ->name("admin.")
     ->group(function () {
         Route::get('/', 'HomeController@index')->name('home');
-        // rotta per i posts
-        Route::resource("posts","PostController");
+        Route::get("posts/deletedPosts", "PostController@deletedPosts")->name('posts.deletedPosts');
+        Route::delete("posts/{post}/deleteThePost", "PostController@deleteThePost")->name('posts.deleteThePost');
+        Route::get("posts/{post}/restore","PostController@restore")->name("posts.restore");
+        // rotta crude  per i posts
+        Route::resource("posts", "PostController");
     });
 
 // se non vede niente torna all'home

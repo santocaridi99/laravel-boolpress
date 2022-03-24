@@ -6,10 +6,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header d-flex">
-                    Boolpress Posts
-
-                    <a class="ms-auto link-danger" href="{{ route('admin.posts.deletedPosts') }}">Post cestinati</a>
-                    <a class="ms-auto" href="{{ route('admin.posts.create') }}">Aggiungi Post +</a>
+                    Delete the post
                 </div>
 
                 <div class="card-body">
@@ -37,15 +34,17 @@
                             <div class="ms-auto">
                                 <a class="ms-auto btn btn-outline-primary btn-sm"
                                     href="{{ route('admin.posts.show', $post->slug) }}">Mostra</a>
-                                {{-- form  che permette di soft deletare un post--}}
-                                <form action="{{ route('admin.posts.deleteThePost', $post->id) }}" method="POST"
+                                {{-- form --}}
+                                <form action="{{ route('admin.posts.destroy', $post->id) }}" method="POST"
                                     class="d-inline-block">
                                     @csrf
                                     @method("delete")
                                     <button type="submit" class="btn btn-outline-danger btn-sm">
-                                        Cestiono
+                                        Elimina
                                     </button>
                                 </form>
+                                <a class="ms-auto btn btn-outline-success btn-sm"
+                                    href="{{ route('admin.posts.restore', $post->id) }}">Restore</a>
                             </div>
                         </li>
                         @endforeach

@@ -118,7 +118,7 @@ class PostController extends Controller
     // invece di show uso lo slug
     public function show($slug)
     {
-        $post = Post::where("slug", $slug)->first();
+        $post = Post::where("slug", $slug)->withTrashed()->first();
         return view("admin.posts.show", compact("post"));
     }
 
@@ -213,6 +213,43 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // post cestinati (in softdelete)
+        $post = Post::withTrashed()->findOrFail($id);
+        // elimino i collegamenti con tabella tags
+        $post->tags()->detach();
+        if ($post->image) {
+            Storage::delete($post->image);
+        }
+        // elemento verrà completamente eliminato
+        $post->forceDelete();
+        return redirect()->route("admin.posts.index");
+    }
+
+    public function deletedPosts()
+    {
+        // raccolgo solo i  post cestinati
+        $posts = Post::where('user_id', Auth::user()->id)->onlyTrashed()->get();
+        // ritorno una view dove li mostra
+        return view("admin.posts.deletedPosts", compact('posts'));
+    }
+
+    public function deleteThePost($id)
+    {
+        // faccio findOrFail di un post
+        $post = Post::findOrFail($id);
+        // faccio un soft delete
+        $post->delete();
+        // reiderizza nella pagina dei post cancellati
+        return redirect()->route('admin.posts.deletedPosts');
+    }
+
+    public function restore($id)
+    {
+        // post cestinati (in softdelete)
+        $post = Post::withTrashed()->findOrFail($id);
+        // restore
+        $post->restore();
+        // redirect all'index
+        return redirect()->route("admin.posts.deletedPosts");
     }
 }
