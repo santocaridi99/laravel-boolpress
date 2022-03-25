@@ -1944,6 +1944,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     // passo ogg post
@@ -3714,6 +3715,7 @@ var render = function () {
     _c("div", { staticClass: "card" }, [
       _c("img", {
         staticClass: "card-img-top img-fluid",
+        staticStyle: { "max-height": "50%" },
         attrs: { src: _vm.getimage(_vm.post), alt: "..." },
       }),
       _vm._v(" "),
@@ -3733,7 +3735,7 @@ var render = function () {
         _vm._v(" "),
         _vm.post.category
           ? _c("p", [_vm._v(_vm._s(_vm.post.category.title))])
-          : _vm._e(),
+          : _c("p", [_vm._v("Nessuna Categoria")]),
         _vm._v(" "),
         _c(
           "div",
@@ -4104,7 +4106,7 @@ var render = function () {
           },
         ],
         staticClass: "form-input",
-        attrs: { type: "text", placeholder: "Filtra post" },
+        attrs: { type: "text", placeholder: "Filtra post [Premi Invio]" },
         domProps: { value: _vm.search },
         on: {
           keydown: function ($event) {

@@ -6,7 +6,7 @@
       <input
         type="text"
         class="form-input"
-        placeholder="Filtra post"
+        placeholder="Filtra post [Premi Invio]"
         v-model="search"
         @keydown.enter="searchSubmit"
       />

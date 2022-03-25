@@ -1,7 +1,7 @@
 <template>
   <div class="col">
     <div class="card">
-      <img :src="getimage(post)" class="card-img-top img-fluid" alt="..." />
+      <img :src="getimage(post)" class="card-img-top img-fluid" alt="..."  style="max-height:50%"/>
       <div class="card-body">
         <h5 class="card-title">{{ post.title }}</h5>
         <!-- content può essere un html -->
@@ -11,6 +11,7 @@
         <p>Data {{ post.created_at }}</p>
         <!-- se c'è la categoria , stampa il titolo -->
         <p v-if="post.category">{{ post.category.title }}</p>
+        <p v-else>Nessuna Categoria</p>
         <div class="card-footer text-end">
           <!-- passo al link oggetto nome rotta post.show e come parametri :post diamo lo slug del post -->
           <router-link :to="{ name: 'posts.show', params: { post: post.slug } }"
